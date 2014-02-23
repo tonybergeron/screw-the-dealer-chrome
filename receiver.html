@@ -1,0 +1,330 @@
+<!--
+Copyright (C) 2014 Google Inc. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" media="all" href="playingCards.ui.css">
+  <link href='https://fonts.googleapis.com/css?family=Diplomata+SC' rel='stylesheet' type='text/css'>
+  <style type="text/css">
+    body {
+      overflow:hidden;
+      background: url('felt.jpg') fixed center repeat;
+      height: 720PX;
+      width: 1200PX;
+    }
+    #main {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-top: -300px;
+      margin-left: -610px;
+      width: 1220px;
+      height: 700px;
+      /* border: 2px solid black; */
+    }
+
+    #title {
+      margin: 0 auto; /* or margin: 0 auto 0 auto */
+      width:100%;
+      font-weight:bold;
+      font-size:50px;
+      color:#FFFFFF;
+      text-align: center;
+      font-family: 'Diplomata SC', cursive;
+    }
+
+    #cards {
+      margin: 0 auto; /* or margin: 0 auto 0 auto */
+      padding-left: 30px;
+      color:#FFFFFF;
+    }
+
+    #cards .column {
+      width: 85px;
+      text-align: center;
+      padding-left: 2px;
+      padding-right: 2px;
+      float:left;
+    }
+
+    #cards .header {
+      font-weight: bold;
+      font-size: 28px;
+      font-family: 'Diplomata SC', cursive;
+    }
+
+    #cards .body {
+      vertical-align: top;
+      text-align: center;
+    }
+
+    #cards .body .wrapper{
+      height:50px;
+      overflow:hidden;
+      float:left;
+    }
+
+    #cards .body .wrapper:last-child{
+      overflow:visible;
+    }
+
+
+    /* Last Card Played */
+    #lastPlayed {
+      margin: 0 auto; /* or margin: 0 auto 0 auto */
+      width:100%;
+      font-weight:bold;
+      font-size:40px;
+      color:#FFFFFF;
+      text-align: center;
+      font-family: 'Diplomata SC', cursive;
+    }
+
+
+    /* Last Cards Played Images */
+    #played {
+      width : 100%;
+      height: 100px;
+      padding-left: 30px;
+    }
+
+    #played .wrapper {
+      width : 21px;
+      overflow:hidden;
+      float:left;
+    }
+    #played .wrapper:last-child {
+      overflow:visible;
+    }
+
+
+    .clearfix:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+
+  </style>
+  <title>Screw the Dealer</title>
+</head>
+<body>
+
+  <div id="main">
+    <!-- Display the Card Types -->
+    <div id="title">Screw the Dealer</div>
+    <br>
+
+    <div id="lastPlayed">&nbsp;</div>
+
+    <!--<div id="played"></div>-->
+
+    <div class="clearfix"></div>
+
+    <br>
+    <div id="cards">
+      <div class="column">
+        <div class="header">2</div>
+        <div class="body" id="card2"></div>
+      </div>
+      <div class="column">
+        <div class="header">3</div>
+        <div class="body" id="card3"></div>
+      </div>
+      <div class="column">
+        <div class="header">4</div>
+        <div class="body" id="card4"></div>
+      </div>
+      <div class="column">
+        <div class="header">5</div>
+        <div class="body" id="card5"></div>
+      </div>
+      <div class="column">
+        <div class="header">6</div>
+        <div class="body" id="card6"></div>
+      </div>
+      <div class="column">
+        <div class="header">7</div>
+        <div class="body" id="card7"></div>
+      </div>
+      <div class="column">
+        <div class="header">8</div>
+        <div class="body" id="card8"></div>
+      </div>
+      <div class="column">
+        <div class="header">9</div>
+        <div class="body" id="card9"></div>
+      </div>
+      <div class="column">
+        <div class="header">10</div>
+        <div class="body" id="card10"></div>
+      </div>
+      <div class="column">
+        <div class="header">J</div>
+        <div class="body" id="cardJ"></div>
+      </div>
+      <div class="column">
+        <div class="header">Q</div>
+        <div class="body" id="cardQ"></div>
+      </div>
+      <div class="column">
+        <div class="header">K</div>
+        <div class="body" id="cardK"></div>
+      </div>
+      <div class="column">
+        <div class="header">A</div>
+        <div class="body" id="cardA"></div>
+      </div>
+    </div>
+  </div>
+
+<script type="text/javascript" src="https://www.gstatic.com/cast/sdk/libs/receiver/2.0.0/cast_receiver.js"></script>
+
+<script type="text/javascript" src="playingCards.js"></script>
+<script type="text/javascript" src="playingCards.ui.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript">
+      
+      window.onload = function() {
+        cast.receiver.logger.setLevelValue(0);
+        window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
+        console.log('Starting Receiver Manager');
+        
+        // handler for the 'ready' event
+        castReceiverManager.onReady = function(event) {
+          console.log('Received Ready event: ' + JSON.stringify(event.data));
+          window.castReceiverManager.setApplicationState("Application status is ready...");
+        };
+        
+        // handler for 'senderconnected' event
+        castReceiverManager.onSenderConnected = function(event) {
+          console.log('Received Sender Connected event: ' + event.data);
+          console.log(window.castReceiverManager.getSender(event.data).userAgent);
+        };
+        
+        // handler for 'senderdisconnected' event
+        castReceiverManager.onSenderDisconnected = function(event) {
+          console.log('Received Sender Disconnected event: ' + event.data);
+          if (window.castReceiverManager.getSenders().length == 0) {
+            window.close();
+          }
+        };
+        
+        // handler for 'systemvolumechanged' event
+        castReceiverManager.onSystemVolumeChanged = function(event) {
+          console.log('Received System Volume Changed event: ' + event.data['level'] + ' ' +
+              event.data['muted']);
+        };
+
+        // create a CastMessageBus to handle messages for a custom namespace
+        window.messageBus =
+          window.castReceiverManager.getCastMessageBus(
+              'urn:x-cast:com.tony.casthelloworld');
+
+        // handler for the CastMessageBus message event
+        window.messageBus.onMessage = function(event) {
+          console.log('Message [' + event.senderId + ']: ' + event.data);
+          
+          // display the message from the sender
+          var message = JSON.parse(event.data);
+          updateCards(message);
+
+          // inform all senders on the CastMessageBus of the incoming message event
+          // sender message listener will be invoked
+          window.messageBus.send(event.senderId, event.data);
+        }
+
+        // initialize the CastReceiverManager with an application status message
+        window.castReceiverManager.start({statusText: "Application is starting"});
+        console.log('Receiver Manager started');
+      };
+
+      //Display Cards Setup
+      var columns = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+
+      //Updates the cards chosen
+      function updateCards(data) {
+
+        if (data.hasOwnProperty('drawn')) {
+          //Print the Cards on the screen
+          updateCardsPlayed(data);
+          //updatePlayed(data);
+          updateLastPlayed(data);
+
+        } else {
+          clearColumns();
+          clearLastPlayed();
+        }
+
+        window.castReceiverManager.setApplicationState("update");
+
+      }
+
+      //Visual of the Cards Played by Rank
+      function updateCardsPlayed(data) {
+        //clear all columns
+        clearColumns();
+
+        //go through each card drawn and add it to its location
+        for(i = 0; i < (data.drawn.length); i++) {
+          var c = data.drawn[i];
+          var card = playingCards.card(c.rank, '', c.suit);
+          $('#card' + card.rank).append('<div class="wrapper">' + card.getHTML() + '</div>');
+        }
+
+      }
+
+      function clearColumns() {
+        //clear all columns
+        for(i = 0; i < columns.length; i++) {
+          $('#card' + columns[i]).empty();
+        }
+      }
+
+      //Visual of the Played Cards in Order
+      function updatePlayed(data) {
+        clearPlayed();
+
+        //Draw those played
+        for(i = 0; i < data.drawn.length; i++) {
+          var c = data.drawn[i];
+          var card = playingCards.card(c.rank, '', c.suit);
+          $('#played').append('<div class="wrapper">' + card.getHTML() + '</div>');
+        }
+      }
+
+      function clearPlayed() {
+        //clear all columns
+        $('#played').empty();
+      }
+
+
+      //Text of the Last Card Played
+      function updateLastPlayed(data) {
+        if(data.drawn.length > 0) {
+          var c = data.drawn[data.drawn.length - 1];
+          $('#lastPlayed').text(c.rankString + " of " + c.suitString);
+        } else {
+          clearLastPlayed();
+        }
+      }
+
+      function clearLastPlayed() {
+        $('#lastPlayed').html("&nbsp;");
+      }
+
+    </script>
+</body>
+</html>
